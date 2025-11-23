@@ -20,14 +20,26 @@ initial_transform = np.eye(4)
 initial_transform[0, 3] = 0.002
 logger.debug(f"This is the matrix:\n{initial_transform}")
 
+def key_callback_example(vis, action, mods):
+    if action == 3:
+        mesh_sphere.transform(initial_transform)
+        return True
+    elif action == 2:
+        mesh_sphere.transform(initial_transform)
+        return True
+    return False
+
 logger.info("Starting renderer...")
-vis = o3d.visualization.Visualizer()
+vis = o3d.visualization.VisualizerWithKeyCallback()
 vis.create_window()
 vis.add_geometry(mesh_sphere)
 vis.add_geometry(mesh_frame)
 frame = 1
 logger.debug("Into the loop")
-while True:
+vis.register_key_action_callback(ord(' '), key_callback_example)
+vis.run()
+#while True:
+while False:
     time.sleep(0.01)
     if frame > 1000:
         logger.info("Reversing the ball.")
@@ -39,4 +51,4 @@ while True:
     vis.update_renderer()
     frame += 1
 
-vis.destroy_window()
+#vis.destroy_window()
